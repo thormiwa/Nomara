@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+// ═══════════════════════════════════════════════════════════════════
+//  NOMARA DESIGN TOKENS — edit here to retheme the whole app
+// ═══════════════════════════════════════════════════════════════════
+
 const config: Config = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
@@ -9,19 +13,37 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Nomara palette — cream base, dark text, subtle warm accents
-        cream: "#F7F4EF",
-        parchment: "#EDE8DF",
-        ink: "#1A1A18",
-        "ink-muted": "#4A4A44",
-        stone: "#8C8880",
-        accent: "#C4A882", // warm sand — the only accent allowed
+        // ── Backgrounds ──────────────────────────────────────────
+        cream:     "#FFFCF5",   // page base — warm white
+        parchment: "#F5EDE0",   // raised sections, sidebar
+        surface:   "#EAE0D0",   // inputs, dividers, borders
+
+        // ── Text ─────────────────────────────────────────────────
+        ink:       "#0F0D0A",   // primary text
+        "ink-muted":"#5A5048",  // secondary text
+        stone:     "#9A8E84",   // muted, captions
+
+        // ── Accent ───────────────────────────────────────────────
+        // The whole hero is this colour — change it to repaint everything
+        accent:        "#FF4D00",  // blazing orange — Lagos heat
+        "accent-2":    "#FFB300",  // amber — secondary highlights
+        "accent-light":"#FFF0E8",  // soft orange tint — callout blocks
       },
+
+      backgroundImage: {
+        // Hero warm glow (subtle, inside the orange section)
+        "glow-warm":   "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.12) 0%, transparent 70%)",
+        // Below-fold glows
+        "glow-amber":  "radial-gradient(ellipse 70% 50% at 90% 50%, rgb(255 179 0 / 0.08) 0%, transparent 65%)",
+      },
+
       fontFamily: {
-        // Display serif (Cormorant Garamond) + refined sans (DM Sans)
-        // Load via next/font in layout.tsx
         serif: ["var(--font-serif)", "Georgia", "serif"],
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        sans:  ["var(--font-sans)", "system-ui", "sans-serif"],
+      },
+
+      letterSpacing: {
+        widest2: "0.3em",
       },
     },
   },

@@ -4,17 +4,70 @@
 
 @layer base {
   :root {
-    --background: #F7F4EF;
-    --foreground: #1A1A18;
+    --bg:     #FFFCF5;
+    --text:   #0F0D0A;
+    --accent: #FF4D00;
   }
 
   html {
     @apply antialiased;
-    background-color: var(--background);
-    color: var(--foreground);
+    background-color: var(--bg);
+    color: var(--text);
+    scroll-behavior: smooth;
   }
 
-  body {
-    @apply font-sans;
+  body { @apply font-sans; background-color: var(--bg); }
+
+  ::selection { background-color: #FF4D00; color: #FFFCF5; }
+
+  * { -webkit-tap-highlight-color: transparent; }
+
+  input, select, textarea { @apply bg-transparent outline-none; }
+}
+
+@layer utilities {
+
+  /* ── Staggered hero entrance ─────────────────────────────── */
+  .reveal { opacity: 0; animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+  .s1 { animation-delay: 0.05s; }
+  .s2 { animation-delay: 0.18s; }
+  .s3 { animation-delay: 0.30s; }
+  .s4 { animation-delay: 0.42s; }
+  .s5 { animation-delay: 0.54s; }
+  .s6 { animation-delay: 0.66s; }
+  @keyframes revealUp {
+    from { opacity: 0; transform: translateY(18px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Standard content fade ───────────────────────────────── */
+  .fade-up       { animation: fadeUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .fade-up-delay { animation: fadeUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) 0.1s both; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── Illustration floats ─────────────────────────────────── */
+  .float      { animation: floatY 5s ease-in-out infinite; }
+  .float-slow { animation: floatY 7s ease-in-out infinite; }
+  .float-d1   { animation: floatY 5s ease-in-out 1s infinite; }
+  .float-d2   { animation: floatY 5s ease-in-out 2s infinite; }
+  @keyframes floatY {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  .pulse-dot   { animation: pulseDot 2.6s ease-in-out infinite; }
+  .pulse-dot-d { animation: pulseDot 2.6s ease-in-out 1.2s infinite; }
+  @keyframes pulseDot {
+    0%, 100% { opacity: 0.8; transform: scale(1); }
+    50%      { opacity: 0.2; transform: scale(0.55); }
+  }
+
+  .drift { animation: driftXY 8s ease-in-out infinite; }
+  @keyframes driftXY {
+    0%, 100% { transform: translate(0, 0) rotate(-32deg); }
+    50%      { transform: translate(7px, -5px) rotate(-32deg); }
   }
 }

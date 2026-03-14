@@ -8,7 +8,8 @@ official embassy sources before going live. Always show last_verified_at.
 Week 3-4: replace get_visa_guide() with a live Sherpa/VisaList API call.
 """
 
-from typing import Optional
+from __future__ import annotations
+from typing import Dict, List, Optional, Tuple
 from app.models.visa import VisaGuide, OfficialLink
 
 ADVISORY = (
@@ -21,7 +22,7 @@ ADVISORY = (
 # Destination codes are ISO 3166-1 alpha-2 except "SCHENGEN" (multi-country).
 # ---------------------------------------------------------------------------
 
-_DATA: dict[tuple[str, str], VisaGuide] = {
+_DATA: Dict[Tuple[str, str], VisaGuide] = {
 
     # -----------------------------------------------------------------------
     ("NG", "GB"): VisaGuide(
@@ -168,7 +169,7 @@ _DATA: dict[tuple[str, str], VisaGuide] = {
         requirement_type="embassy-visa",
         allowed_stay_days=90,
         processing_time_days=10,
-        fee_usd=0,
+        fee_usd=44,
         documents_required=[
             "Valid Nigerian passport (6+ months validity)",
             "Completed visa application form",
@@ -189,7 +190,7 @@ _DATA: dict[tuple[str, str], VisaGuide] = {
 5. **Wait for processing** — typically 7–10 business days.
 6. **Collect your passport** with the visa sticker from the embassy.
 
-> The visa fee is currently waived but confirm before your appointment.
+> The fee is approximately €40 (~$44 USD). Confirm the exact amount with the embassy before your appointment.
 """.strip(),
         official_links=[
             OfficialLink(label="Moroccan Embassy in Nigeria", url="https://www.embassyofmorocco.ng"),
@@ -246,7 +247,7 @@ _DATA: dict[tuple[str, str], VisaGuide] = {
         requirement_type="embassy-visa",
         allowed_stay_days=90,
         processing_time_days=10,
-        fee_usd=0,
+        fee_usd=23,
         documents_required=[
             "Valid Nigerian passport (30+ days beyond intended stay)",
             "Completed BI-84 visa application form",
@@ -265,7 +266,7 @@ _DATA: dict[tuple[str, str], VisaGuide] = {
 2. **Complete the BI-84 form** (downloadable from the High Commission website).
 3. **Compile all documents** including police clearance (apply via Nigeria Police Force).
 4. **Attend your appointment** — biometrics are collected at the mission.
-5. **Pay no fee** — South Africa does not charge a visa fee for Nigerian applicants.
+5. **Pay the fee** — approximately ZAR 425 (~$23 USD), payable at the mission.
 6. **Wait for processing** — typically 7–10 business days.
 7. **Collect your passport** with the visa stamp.
 
@@ -884,7 +885,7 @@ The Maldives grants free visa on arrival to all nationalities.
 # Name → code aliases for fuzzy lookup
 # ---------------------------------------------------------------------------
 
-_ALIASES: dict[str, str] = {
+_ALIASES: Dict[str, str] = {
     # UK
     "uk": "GB", "united kingdom": "GB", "great britain": "GB", "britain": "GB",
     # UAE
@@ -939,7 +940,7 @@ _ALIASES: dict[str, str] = {
 }
 
 
-def _resolve_code(raw: str) -> "str | None":
+def _resolve_code(raw: str) -> Optional[str]:
     """Normalise input to a destination code, or return None if unrecognised."""
     upper = raw.strip().upper()
     lower = raw.strip().lower()
@@ -950,7 +951,7 @@ def _resolve_code(raw: str) -> "str | None":
     return _ALIASES.get(lower)
 
 
-def get_visa_guide(passport_country: str, destination: str) -> VisaGuide | None:
+def get_visa_guide(passport_country: str, destination: str) -> Optional[VisaGuide]:
     """
     Return a VisaGuide for the given passport + destination combination.
     Accepts ISO country codes or common names (case-insensitive).
@@ -963,7 +964,7 @@ def get_visa_guide(passport_country: str, destination: str) -> VisaGuide | None:
     return _DATA.get((passport, dest_code))
 
 
-def list_supported_destinations(passport_country: str) -> list[str]:
+def list_supported_destinations(passport_country: str) -> List[str]:
     """Return all destination codes available for a given passport."""
     passport = passport_country.strip().upper()
     return [dest for (p, dest) in _DATA if p == passport]
